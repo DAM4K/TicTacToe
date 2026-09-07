@@ -1,0 +1,24 @@
+# Directoare si fisiere generate de Visual Studio
+.vs/
+out/
+build/
+x64/
+x86/
+Debug/
+Release/
+
+# Executabile si obiecte temporare
+*.exe
+*.obj
+*.o
+*.pdb
+*.ilk
+*.idb
+*.tlog
+*.log
+
+# Fisiere de utilizator Visual Studio (setari locale)
+*.user
+*.suo
+*.userosv
+*.sln.docstates
