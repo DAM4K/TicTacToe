@@ -11,7 +11,7 @@ Creați fișiere hpp cu definirea structurilor de bază necesitate pentru proiec
 desenator (de exemplu Painter.hpp, Presenter.hpp sau Renderer.hpp)
 ascultator (de exemplu Listener.hpp)
 ```
-##Rezultat:
+**Rezultat:**
 
 Iată o structură modulară și curată în C++ pentru jocul Tic-Tac-Toe, separată conform cerințelor în **Motor de joc**, **Desenator** și **Ascultator**, alături de conținutul pentru fișierul `README.md`.
 
