@@ -221,7 +221,7 @@ Doriți să adaug și o implementare de exemplu pentru clasele derivate din `Lis
 ```prompt
 eu fac prin visual studio
 ```
-Rezultat:
+**Rezultat:**
 Este chiar mai simplu dacă folosești **Visual Studio**! Vizualul se ocupă de gestionarea fișierelor și integrarea cu Git fără să mai fii nevoit să folosești terminalul pentru majoritatea pașilor.
 
 Iată ghidul complet adaptat pas cu pas pentru **Visual Studio**:
