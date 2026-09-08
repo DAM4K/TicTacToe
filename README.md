@@ -21,5 +21,5 @@ Acest proiect este o implementare în C++ a jocului **Tic-Tac-Toe (X și O)** pe
 * `ConsolePainter`: Implementare a interfeței `Painter` pentru desenarea tablei și mesajelor în consolă (`std::cout`).
 * `Engine`: Clasa principală ce conține logica jocului, aplică regulile și verifică condițiile de victorie sau remiză.
 
-## Autor
-* Damian
+## Creat de
+* Damian P DJ2501
