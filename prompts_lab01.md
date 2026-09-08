@@ -218,8 +218,6 @@ public:
 
 Doriți să adaug și o implementare de exemplu pentru clasele derivate din `Listener` și `Painter` în fișierul `main.cpp` pentru a putea rula jocul direct?
 
-```
-
 ```prompt
 eu fac prin visual studio
 ```
