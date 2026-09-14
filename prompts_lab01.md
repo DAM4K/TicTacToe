@@ -577,3 +577,110 @@ Visual Studio are Git integrat, deci nu ai nevoie de comenzi din terminal:
 
 Dacă verifici acum profilul tău pe [github.com](https://www.google.com/search?q=https://github.com/), vei vedea toate fișierele adăugate și textul structurat din `README.md`!
 ```
+
+cannot open source file "ConsolePainter.hpp"
+cannot open source file "ConsoleListener.hpp"
+cannot open source file "Engine.hpp"
+Cannot open include file: 'ConsolePainter.hpp': No such file or directory
+identifier "ConsolePainter" is undefined
+identifier "ConsoleListener" is undefined
+identifier "Engine" is undefined
+
+```
+Rezultat: Aceste erori înseamnă că Visual Studio nu găsește fișierele .hpp pe care le-ai creat sau nu le-a asociat corect în proiect.Iată soluția simplă pas cu pas pentru a rezolva toate aceste erori simultan:Cauza 1: Fișierele au extensia .hpp.h sau .hpp.txt în loc de .hppVisual Studio adaugă adesea extensia .h automat când creezi un Header File. Dacă tu l-ai numit Engine.hpp, Visual Studio l-a salvat ca Engine.hpp.h.În panoul Solution Explorer (în dreapta), dă click dreapta pe Engine.hpp $\rightarrow$ Rename.Verifică dacă numele este exact Engine.hpp (fără un .h ascuns la final).Repetă verificarea pentru ConsolePainter.hpp și ConsoleListener.hpp.Cauza 2: Fișierele sunt create pe disc, dar NU sunt adăugate în Solution ExplorerDacă ai creat fișierele în folderul de pe calculator, dar ele nu apar în lista din Visual Studio, compilerul nu le va vedea.În Solution Explorer, dă click dreapta pe folderul Header Files $\rightarrow$ Add $\rightarrow$ Existing Item...Selectează fișierele Engine.hpp, ConsolePainter.hpp, ConsoleListener.hpp (și restul fișierelor .hpp) din folder și apasă Add.Cauza 3: Verificarea directă în main.cppAsigură-te că la începutul fișierului main.cpp directoarele sunt incluse cu ghilimele "" (nu cu paranteze unghiulare <>):C++#include "ConsolePainter.hpp"
+#include "ConsoleListener.hpp"
+#include "Engine.hpp"
+
+int main() {
+    ConsolePainter painter;
+    ConsoleListener listener;
+
+    Engine game(painter, listener);
+    game.run();
+
+    return 0;
+}
+Pasul Final: Re-compilareaDupă ce te-ai asigurat că toate fișierele .hpp sunt vizibile în panoul Header Files din Solution Explorer:Apasă combinația de taste Ctrl + Shift + B (sau mergi sus la Build $\rightarrow$ Rebuild Solution).Erorile vor dispărea, iar apăsarea tastei F5 va rula jocul fără probleme!
+
+```
+in readme trebuie ceva sa fac?
+
+```
+rezultat:
+Da, trebuie doar să te asiguri că ai adăugat fișierul README.md în repozitoriu pe ramura lab01 pentru a lua punctajul maxim (good definition - 2 puncte).Fișierul README.md creat anterior conține deja tot ce cere grila. Iată pașii simpli pentru a fi sigur că este adăugat și trimis pe GitHub:Pasul 1: Salvează/Verifică conținutul README.mdAsigură-te că fișierul README.md aflat în folderul proiectului conține structura completă:Markdown# TicTacToe-Cpp
+
+## Descrierea proiectului și Regulile de joc
+Acest proiect este o implementare în C++ a jocului **Tic-Tac-Toe (X și O)** pentru consolă, structurat pe o arhitectură modulară.
+
+**Reguli de joc:**
+1. Jocul se desfășoară pe o tablă de 3x3 celule.
+2. Participă 2 jucători (simbolurile X și O).
+3. Jucătorii introduc pe rând coordonatele (rând și coloană de la 0 la 2) pentru a plasa simbolul.
+4. Primul jucător care aliniează 3 simboluri identice pe orizontală, verticală sau diagonală câștigă.
+5. Dacă toate celulele sunt ocupate și nu există un câștigător, jocul se încheie la egalitate (remiză).
+
+## Structuri de date și descrierea lor
+* `Symbol` (enum class): Reprezintă starea unei celule de pe tablă (`NONE`, `X`, `O`).
+* `GameState` (enum class): Reprezintă starea curentă a jocului (`IN_PROGRESS`, `X_WON`, `O_WON`, `DRAW`).
+* `Position` (struct): Reține coordonatele unei mutări pe tablă (`row`, `col`).
+* `Board` (alias `std::vector<std::vector<Symbol>>`): Matricea 3x3 a stării jocului.
+* `Listener` (interfață): Gestionează preluarea datelor de la utilizator.
+* `Painter` (interfață): Gestionează afișarea interfeței în consolă.
+* `Engine` (clasă): Conține logica principală și verificarea condițiilor de victorie/egalitate.
+Pasul 2: Trimite-l pe GitHub pe ramura lab01În Visual Studio, deschide fereastra Git Changes (View $\rightarrow$ Git Changes).În caseta de mesaj scrie: Adaugat README.md cu descrierea si regulile jocului.Apasă pe Commit All.Apasă pe butonul de Push (săgeata ↑) pentru a urca modificările pe ramura lab01.După acest trimitere, intră pe pagina repozitoriului pe GitHub, comută pe ramura lab01 și vei vedea descrierea afișată direct pe prima pagină!
+```
+dupa ce ii dau pull din visual studio, ce fac?
+```
+După ce ai trimis modificările pe GitHub (prin Push, nu Pull), mai ai de făcut doar doi pași simpli pe site-ul GitHub pentru a finaliza laboratorul:
+
+Pasul 1: Creează și aprobă Pull Request-ul (pe GitHub)
+Intra pe pagina repozitoriului tău de pe GitHub: [https://github.com/savagebaby1223/TicTacToe](https://github.com/savagebaby1223/TicTacToe)
+
+Sus va apărea un chenar galben cu mesajul: lab01 had recent pushes. Apasă butonul verde Compare & pull request.
+
+La titlu scrie Laborator 1 - Implementare TicTacToe și apasă Create pull request.
+
+Apasă butonul verde Merge pull request, apoi Confirm merge.
+(Asta va unii codul de pe lab01 în ramura main).
+
+Pasul 2: Prinde link-ul și trimite pe Moodle
+Copiază link-ul principal al repozitoriului tău:
+[https://github.com/savagebaby1223/TicTacToe](https://github.com/savagebaby1223/TicTacToe)
+
+Deschide platforma Moodle la tema Lab 1.
+
+Apasă pe Add submission (Adaugă predare).
+
+Lipește link-ul în câmpul de text și salvează modificările.
+
+Dacă totul este postat pe Moodle, ai terminat 100% cerințele tehnice ale laboratorului!
+```
+am nevoie de gitore
+```
+Iată fișierul .gitignore special configurat pentru proiecte C++ de Visual Studio.Acesta îi spune Git-ului să ignore fișierele temporare, executabilele create la compilare și directoarele de cache create de Visual Studio (precum .vs), păstrând repozitoriul curat doar cu fișierele sursă (.hpp, .cpp, .md).Conținutul fișierului .gitignoreCreează un fișier numit exact .gitignore (cu punct în față) în folderul principal al proiectului și lipește următorul cod:Fragment de cod# Directoare si fisiere generate de Visual Studio
+.vs/
+out/
+build/
+x64/
+x86/
+Debug/
+Release/
+
+# Executabile si obiecte temporare
+*.exe
+*.obj
+*.o
+*.pdb
+*.ilk
+*.idb
+*.tlog
+*.log
+
+# Fisiere de utilizator Visual Studio (setari locale)
+*.user
+*.suo
+*.userosv
+*.sln.docstates
+Cum îl adaugi în Visual Studio:În Solution Explorer, dă click dreapta pe proiect/folder $\rightarrow$ Add $\rightarrow$ New Item....Alege Text File (.txt) și numește-l exact .gitignore.Lipește conținutul de mai sus și salvează (Ctrl + S).Mergi în okno-ul Git Changes: vei observa că toate fișierele temporare inutile au dispărut din listă, rămânând doar fișierele tale .hpp, main.cpp și README.md.Fă Commit All și apoi Push ($\uparrow$).
+```
+.
