@@ -11,7 +11,7 @@ Un joc clasic de **Tic-Tac-Toe** dezvoltat în C++ pentru consolă. Jocul se des
 
 ---
 
-## Structuri de Date și Descrierea Lor
+## Structuri de Date și Metode
 
 ### 1. `enum class Player`
 Reprezintă starea unei celule sau jucătorul curent:
@@ -28,11 +28,39 @@ Starea curentă a partidei:
 
 ### 3. `struct Board`
 Conține starea grilei de joc:
-* `cells[3][3]`: Matrice 3x3 de tip `Player` ce păstrează starea fiecărei celule.
+* `cells[3][3]`: Matrice 3x3 de tip `Player`.
+* **Metode:**
+  * `reset()`: Resetează toate celulele la starea `Player::None`.
+  * `isCellEmpty(int r, int c)`: Verifică dacă o celulă este liberă.
 
 ### 4. `struct MoveInput`
 Păstrează datele de intrare citite de la utilizator:
-* `row`: Linia selectată (0-2).
-* `col`: Coloana selectată (0-2).
-* `isValid`: `true` dacă valorile introduse sunt în limitele valide.
-* `isQuitRequested`: `true` dacă jucătorul a solicitat părăsirea jocului.
+* `row`, `col`: Coordonatele alese.
+* `isValid`: `true` dacă valorile introduse sunt valide.
+* `isQuitRequested`: `true` dacă jucătorul a cerut ieșirea.
+* **Metode:**
+  * `shouldQuit()`: Returnează dacă s-a solicitat părăsirea jocului.
+  * `canProcessMove()`: Verifică dacă mutarea poate fi procesată.
+
+---
+
+## Construcția Proiectului (Build)
+
+Proiectul poate fi construit manual din linia de comandă în două moduri:
+
+### Varianta 1: Utilizând Makefile (Recomandat)
+Pentru compilare și creare executabil:
+> make
+
+Pentru ștergerea fișierelor obiect și executabilului:
+> make clean
+
+### Varianta 2: Compilare manuală directă cu g++
+Compilarea unui fișier obiect individual:
+> g++ -std=c++17 -c Engine.cpp -o Engine.o
+
+Compilarea întregului proiect într-un singur executabil:
+> g++ -std=c++17 Tictactoe.cpp Engine.cpp Listener.cpp Painter.cpp -o Tictactoe
+
+Rularea proiectului:
+> ./Tictactoe

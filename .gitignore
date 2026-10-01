@@ -1,6 +1,13 @@
+# Visual Studio
 .vs/
 x64/
 Debug/
 Release/
 *.user
 *.suo
+
+# Compilare manuală (Object files & Executabile)
+*.o
+*.obj
+TicTacToe
+TicTacToe.exe

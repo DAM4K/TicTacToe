@@ -7,6 +7,14 @@ namespace TicTacToe {
         int col;
         bool isValid;
         bool isQuitRequested;
+
+        bool shouldQuit() const {
+            return isQuitRequested;
+        }
+
+        bool canProcessMove() const {
+            return isValid && !isQuitRequested;
+        }
     };
 
     class Listener {
