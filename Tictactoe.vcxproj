@@ -139,7 +139,10 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Engine.hpp" />
+    <ClCompile Include="Listener.cpp" />
+    <ClCompile Include="Painter.cpp" />
     <ClCompile Include="Tictactoe.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -147,6 +150,7 @@
     <ClInclude Include="Painter.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Makefile" />
     <None Include="prompts_lab01.md" />
     <None Include="README.md" />
   </ItemGroup>
