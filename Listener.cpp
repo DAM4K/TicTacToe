@@ -8,7 +8,7 @@ namespace TicTacToe {
 
     MoveInput Listener::listenForMove() const {
         MoveInput input{ -1, -1, false, false };
-        std::cout << "Introduceti linia si coloana (0-2) sau -1 pentru ieșire: ";
+        std::cout << "Introduceti linia si coloana (0-2) sau -1 pentru iesire: ";
 
         int r, c;
         if (std::cin >> r) {
@@ -34,7 +34,7 @@ namespace TicTacToe {
     }
 
     bool Listener::askForRestart() const {
-        std::cout << "Doriți să jucați din nou? (y/n): ";
+        std::cout << "Doriti sa jucati din nou? (y/n): ";
         char answer;
         std::cin >> answer;
         return (answer == 'y' || answer == 'Y');

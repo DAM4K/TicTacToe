@@ -27,11 +27,11 @@ int main() {
 
             if (input.canProcessMove()) {
                 if (!engine.makeMove(input.row, input.col)) {
-                    painter.drawMessage("Mutare invalidă! Celula este deja ocupată.");
+                    painter.drawMessage("Mutare invalida! Celula este deja ocupata.");
                 }
             }
             else {
-                painter.drawMessage("Coordonate invalide! Alegeți numere între 0 și 2.");
+                painter.drawMessage("Coordonate invalide! Alegeti numere intre 0 si 2.");
             }
         }
 
@@ -45,6 +45,6 @@ int main() {
         keepPlaying = listener.askForRestart();
     }
 
-    painter.drawMessage("Vă mulțumim pentru joc!");
+    painter.drawMessage("Va multumim pentru joc!");
     return 0;
 }

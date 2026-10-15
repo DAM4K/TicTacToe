@@ -7,12 +7,9 @@ namespace TicTacToe {
     Painter::Painter() {}
     Painter::~Painter() {}
 
+
     void Painter::clearScreen() const {
-#ifdef _WIN32
-        std::system("cls");
-#else
-        std::system("clear");
-#endif
+        std::cout << "\x1B[2J\x1B[H" << std::flush;
     }
 
     void Painter::drawHeader() const {
@@ -41,16 +38,16 @@ namespace TicTacToe {
     void Painter::drawStatus(Player currentPlayer, GameState state) const {
         if (state == GameState::InProgress) {
             char p = (currentPlayer == Player::X) ? 'X' : 'O';
-            std::cout << "Rândul jucătorului: " << p << "\n";
+            std::cout << "Randul jucatorului: " << p << "\n";
         }
         else if (state == GameState::PlayerXWins) {
-            std::cout << ">>> FELICITĂRI! Jucătorul X a câștigat! <<<\n";
+            std::cout << ">>> FELICITARI! Jucatorul X a castigat! <<<\n";
         }
         else if (state == GameState::PlayerOWins) {
-            std::cout << ">>> FELICITĂRI! Jucătorul O a câștigat! <<<\n";
+            std::cout << ">>> FELICITARI! Jucatorul O a castigat! <<<\n";
         }
         else if (state == GameState::Draw) {
-            std::cout << ">>> REMIZĂ! Tabla este plină. <<<\n";
+            std::cout << ">>> REMIZA! Tabla este plina. <<<\n";
         }
     }
 
@@ -59,7 +56,7 @@ namespace TicTacToe {
     }
 
     void Painter::drawHelp() const {
-        std::cout << "Instrucțiuni: Introduceți două numere separate prin spațiu (de ex: 1 1).\n";
+        std::cout << "Instructiuni: Introduceti doua numere separate prin spatiu (de ex: 1 1).\n";
     }
 
 }
