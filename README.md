@@ -50,17 +50,17 @@ Proiectul poate fi construit manual din linia de comandă în două moduri:
 
 ### Varianta 1: Utilizând Makefile (Recomandat)
 Pentru compilare și creare executabil:
-> make
+> mingw32-make
 
 Pentru ștergerea fișierelor obiect și executabilului:
-> make clean
+> mingw32-make clean
 
 ### Varianta 2: Compilare manuală directă cu g++
 Compilarea unui fișier obiect individual:
 > g++ -std=c++17 -c Engine.cpp -o Engine.o
 
 Compilarea întregului proiect într-un singur executabil:
-> g++ -std=c++17 Tictactoe.cpp Engine.cpp Listener.cpp Painter.cpp -o Tictactoe
+> g++ -std=c++17 Tictactoe.cpp Engine.cpp Listener.cpp Painter.cpp -o TicTacToe.exe
 
 Rularea proiectului:
-> ./Tictactoe
+> ./TicTacToe.exe
