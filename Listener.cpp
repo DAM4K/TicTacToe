@@ -1,33 +1,47 @@
+
 #include "Listener.hpp"
 #include <iostream>
+#include <string>
 
 namespace TicTacToe {
 
-    Listener::Listener() {}
-    Listener::~Listener() {}
+    Listener::Listener() = default;
+    Listener::~Listener() = default;
 
     MoveInput Listener::listenForMove() const {
         MoveInput input{ -1, -1, false, false };
+
         std::cout << "Introduceti linia si coloana (0-2) sau -1 pentru iesire: ";
 
-        int r, c;
-        if (std::cin >> r) {
-            if (r == -1) {
-                input.isQuitRequested = true;
-                return input;
+        int row, col;
+
+        if (!(std::cin >> row)) {
+            if (!std::cin.eof()) {
+                std::cin.clear();
+                std::string invalidInput;
+                std::cin >> invalidInput;
             }
-            if (std::cin >> c) {
-                if (r >= 0 && r < 3 && c >= 0 && c < 3) {
-                    input.row = r;
-                    input.col = c;
-                    input.isValid = true;
-                }
-            }
+            return input;
         }
-        else {
-            std::cin.clear();
-            std::string dummy;
-            std::cin >> dummy;
+
+        if (row == -1) {
+            input.isQuitRequested = true;
+            return input;
+        }
+
+        if (!(std::cin >> col)) {
+            if (!std::cin.eof()) {
+                std::cin.clear();
+                std::string invalidInput;
+                std::cin >> invalidInput;
+            }
+            return input;
+        }
+
+        if (row >= 0 && row < 3 && col >= 0 && col < 3) {
+            input.row = row;
+            input.col = col;
+            input.isValid = true;
         }
 
         return input;
@@ -35,9 +49,15 @@ namespace TicTacToe {
 
     bool Listener::askForRestart() const {
         std::cout << "Doriti sa jucati din nou? (y/n): ";
-        char answer;
-        std::cin >> answer;
-        return (answer == 'y' || answer == 'Y');
+
+        std::string answer;
+
+        if (!(std::cin >> answer)) {
+            return false;
+        }
+
+        return !answer.empty() &&
+            (answer[0] == 'y' || answer[0] == 'Y');
     }
 
 }

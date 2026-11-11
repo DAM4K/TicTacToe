@@ -1,7 +1,10 @@
+
 #pragma once
 
 #include <iostream>
-#include <vector>
+#include <array>
+#include <algorithm>
+#include <cstddef>
 
 namespace TicTacToe {
 
@@ -18,9 +21,11 @@ namespace TicTacToe {
         Draw
     };
 
+    using BoardRow = std::array<Player, 3>;
+    using BoardCells = std::array<BoardRow, 3>;
 
     struct Board {
-        Player cells[3][3];
+        BoardCells cells{};
 
         // Constructor implicit
         Board() {
@@ -33,7 +38,7 @@ namespace TicTacToe {
         }
 
         // Constructor cu parametri
-        Board(const Player initialCells[3][3]) {
+        Board(const BoardCells& initialCells) {
             copyCells(initialCells);
         }
 
@@ -47,14 +52,10 @@ namespace TicTacToe {
 
         // Operatori de comparare
         bool operator==(const Board& other) const {
-            for (int r = 0; r < 3; ++r) {
-                for (int c = 0; c < 3; ++c) {
-                    if (cells[r][c] != other.cells[r][c]) {
-                        return false;
-                    }
-                }
-            }
-            return true;
+            return std::equal(
+                cells.begin(), cells.end(),
+                other.cells.begin()
+            );
         }
 
         bool operator!=(const Board& other) const {
@@ -62,14 +63,10 @@ namespace TicTacToe {
         }
 
         bool operator<(const Board& other) const {
-            for (int r = 0; r < 3; ++r) {
-                for (int c = 0; c < 3; ++c) {
-                    if (cells[r][c] != other.cells[r][c]) {
-                        return cells[r][c] < other.cells[r][c];
-                    }
-                }
-            }
-            return false;
+            return std::lexicographical_compare(
+                cells.begin(), cells.end(),
+                other.cells.begin(), other.cells.end()
+            );
         }
 
         bool operator>(const Board& other) const {
@@ -87,34 +84,37 @@ namespace TicTacToe {
         // Operator de iesire
         friend std::ostream& operator<<(std::ostream& out,
             const Board& board) {
-            for (int r = 0; r < 3; ++r) {
-                for (int c = 0; c < 3; ++c) {
-                    if (board.cells[r][c] == Player::X) {
+            for (const auto& row : board.cells) {
+                std::size_t c = 0;
+
+                for (const auto& cell : row) {
+                    if (cell == Player::X) {
                         out << 'X';
                     }
-                    else if (board.cells[r][c] == Player::O) {
+                    else if (cell == Player::O) {
                         out << 'O';
                     }
                     else {
                         out << '-';
                     }
 
-                    if (c < 2) {
+                    if (++c < row.size()) {
                         out << ' ';
                     }
                 }
 
-                if (r < 2) {
+                if (&row != &board.cells.back()) {
                     out << '\n';
                 }
             }
+
             return out;
         }
 
         // Operator de intrare
         friend std::istream& operator>>(std::istream& in, Board& board) {
-            for (int r = 0; r < 3; ++r) {
-                for (int c = 0; c < 3; ++c) {
+            for (auto& row : board.cells) {
+                for (auto& cell : row) {
                     char symbol;
 
                     if (!(in >> symbol)) {
@@ -122,13 +122,13 @@ namespace TicTacToe {
                     }
 
                     if (symbol == 'X' || symbol == 'x') {
-                        board.cells[r][c] = Player::X;
+                        cell = Player::X;
                     }
                     else if (symbol == 'O' || symbol == 'o') {
-                        board.cells[r][c] = Player::O;
+                        cell = Player::O;
                     }
                     else if (symbol == '-') {
-                        board.cells[r][c] = Player::None;
+                        cell = Player::None;
                     }
                     else {
                         in.setstate(std::ios::failbit);
@@ -136,14 +136,13 @@ namespace TicTacToe {
                     }
                 }
             }
+
             return in;
         }
 
         void reset() {
-            for (int r = 0; r < 3; ++r) {
-                for (int c = 0; c < 3; ++c) {
-                    cells[r][c] = Player::None;
-                }
+            for (auto& row : cells) {
+                std::fill(row.begin(), row.end(), Player::None);
             }
         }
 
@@ -151,16 +150,13 @@ namespace TicTacToe {
             if (r >= 0 && r < 3 && c >= 0 && c < 3) {
                 return cells[r][c] == Player::None;
             }
+
             return false;
         }
 
     private:
-        void copyCells(const Player source[3][3]) {
-            for (int r = 0; r < 3; ++r) {
-                for (int c = 0; c < 3; ++c) {
-                    cells[r][c] = source[r][c];
-                }
-            }
+        void copyCells(const BoardCells& source) {
+            std::copy(source.begin(), source.end(), cells.begin());
         }
     };
 
@@ -172,7 +168,7 @@ namespace TicTacToe {
         void initialize();
         bool makeMove(int row, int col);
 
-        Board getBoard() const;
+        const Board& getBoard() const;
         Player getCurrentPlayer() const;
         GameState getGameState() const;
 
