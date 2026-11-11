@@ -1,12 +1,12 @@
+
 #include "Painter.hpp"
 #include <iostream>
-#include <cstdlib>
+#include <cstddef>
 
 namespace TicTacToe {
 
-    Painter::Painter() {}
-    Painter::~Painter() {}
-
+    Painter::Painter() = default;
+    Painter::~Painter() = default;
 
     void Painter::clearScreen() const {
         std::cout << "\x1B[2J\x1B[H" << std::flush;
@@ -21,17 +21,28 @@ namespace TicTacToe {
     void Painter::drawBoard(const Board& board) const {
         std::cout << "    0   1   2\n";
         std::cout << "  -------------\n";
-        for (int r = 0; r < 3; ++r) {
-            std::cout << r << " | ";
-            for (int c = 0; c < 3; ++c) {
+
+        std::size_t rowIndex = 0;
+
+        for (const auto& row : board.cells) {
+            std::cout << rowIndex++ << " | ";
+
+            for (const auto& cell : row) {
                 char symbol = ' ';
-                if (board.cells[r][c] == Player::X) symbol = 'X';
-                else if (board.cells[r][c] == Player::O) symbol = 'O';
+
+                if (cell == Player::X) {
+                    symbol = 'X';
+                }
+                else if (cell == Player::O) {
+                    symbol = 'O';
+                }
 
                 std::cout << symbol << " | ";
             }
+
             std::cout << "\n  -------------\n";
         }
+
         std::cout << "\n";
     }
 

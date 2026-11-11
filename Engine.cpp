@@ -1,4 +1,7 @@
+
 #include "Engine.hpp"
+#include <algorithm>
+#include <array>
 
 namespace TicTacToe {
 
@@ -6,10 +9,10 @@ namespace TicTacToe {
         initialize();
     }
 
-    Engine::~Engine() {}
+    Engine::~Engine() = default;
 
     void Engine::initialize() {
-        board.reset(); 
+        board.reset();
         currentPlayer = Player::X;
         gameState = GameState::InProgress;
     }
@@ -22,15 +25,25 @@ namespace TicTacToe {
         checkGameState();
 
         if (gameState == GameState::InProgress) {
-            currentPlayer = (currentPlayer == Player::X) ? Player::O : Player::X;
+            currentPlayer = (currentPlayer == Player::X)
+                ? Player::O
+                : Player::X;
         }
 
         return true;
     }
 
-    Board Engine::getBoard() const { return board; }
-    Player Engine::getCurrentPlayer() const { return currentPlayer; }
-    GameState Engine::getGameState() const { return gameState; }
+    const Board& Engine::getBoard() const {
+        return board;
+    }
+
+    Player Engine::getCurrentPlayer() const {
+        return currentPlayer;
+    }
+
+    GameState Engine::getGameState() const {
+        return gameState;
+    }
 
     bool Engine::isGameOver() const {
         return gameState != GameState::InProgress;
@@ -48,24 +61,67 @@ namespace TicTacToe {
         }
     }
 
-    bool Engine::checkWin(Player p) const {
-        for (int i = 0; i < 3; ++i) {
-            if (board.cells[i][0] == p && board.cells[i][1] == p && board.cells[i][2] == p) return true;
-            if (board.cells[0][i] == p && board.cells[1][i] == p && board.cells[2][i] == p) return true;
-        }
-        if (board.cells[0][0] == p && board.cells[1][1] == p && board.cells[2][2] == p) return true;
-        if (board.cells[0][2] == p && board.cells[1][1] == p && board.cells[2][0] == p) return true;
+    bool Engine::checkWin(Player player) const {
+        // Verifica daca toate elementele unei linii sunt egale
+        const auto isWinningLine = [player](std::array<Player, 3> line) {
+            std::sort(line.begin(), line.end());
 
-        return false;
+            return line.front() == player &&
+                line.back() == player;
+            };
+
+        for (std::size_t i = 0; i < 3; ++i) {
+
+            // Verificam liniile
+            if (isWinningLine(board.cells[i])) {
+                return true;
+            }
+
+            // Verificam coloanele
+            std::array<Player, 3> column = {
+                board.cells[0][i],
+                board.cells[1][i],
+                board.cells[2][i]
+            };
+
+            if (isWinningLine(column)) {
+                return true;
+            }
+        }
+
+        // Verificam diagonala principala
+        std::array<Player, 3> mainDiagonal = {
+            board.cells[0][0],
+            board.cells[1][1],
+            board.cells[2][2]
+        };
+
+        if (isWinningLine(mainDiagonal)) {
+            return true;
+        }
+
+        // Verificam diagonala secundara
+        std::array<Player, 3> secondaryDiagonal = {
+            board.cells[0][2],
+            board.cells[1][1],
+            board.cells[2][0]
+        };
+
+        return isWinningLine(secondaryDiagonal);
     }
 
     bool Engine::isBoardFull() const {
-        for (int r = 0; r < 3; ++r) {
-            for (int c = 0; c < 3; ++c) {
-                if (board.cells[r][c] == Player::None) return false;
+        return std::all_of(
+            board.cells.begin(),
+            board.cells.end(),
+            [](const BoardRow& row) {
+                return std::find(
+                    row.begin(),
+                    row.end(),
+                    Player::None
+                ) == row.end();
             }
-        }
-        return true;
+        );
     }
 
 }
