@@ -1,66 +1,145 @@
-# Tic-Tac-Toe (X și O)
 
-## Descrierea Proiectului & Reguli de Joc
-Un joc clasic de **Tic-Tac-Toe** dezvoltat în C++ pentru consolă. Jocul se desfășoară pe o tablă de 3x3 între doi jucători (`X` și `O`).
+# Tic-Tac-Toe (X si O)
 
-### Reguli:
-1. Jocul începe cu jucătorul `X`.
-2. Jucătorii introduc pe rând coordonatele unei celule libere (linie și coloană, de la 0 la 2).
-3. Primul jucător care reușește să plaseze 3 simboluri identice pe orizontală, verticală sau diagonală câștigă.
-4. Dacă toate cele 9 celule sunt completate fără un câștigător, jocul se încheie cu remiză.
+## Descrierea proiectului
 
----
+Un joc clasic Tic-Tac-Toe dezvoltat in C++ pentru consola. Jocul se desfasoara pe o tabla de 3x3 intre doi jucatori (`X` si `O`).
 
-## Structuri de Date și Metode
-
-### 1. `enum class Player`
-Reprezintă starea unei celule sau jucătorul curent:
-* `None`: Celulă goală.
-* `X`: Simbolul jucătorului X.
-* `O`: Simbolul jucătorului O.
-
-### 2. `enum class GameState`
-Starea curentă a partidei:
-* `InProgress`: Jocul este în desfășurare.
-* `PlayerXWins`: Jucătorul X a câștigat.
-* `PlayerOWins`: Jucătorul O a câștigat.
-* `Draw`: Remiză.
-
-### 3. `struct Board`
-Conține starea grilei de joc:
-* `cells[3][3]`: Matrice 3x3 de tip `Player`.
-* **Metode:**
-  * `reset()`: Resetează toate celulele la starea `Player::None`.
-  * `isCellEmpty(int r, int c)`: Verifică dacă o celulă este liberă.
-
-### 4. `struct MoveInput`
-Păstrează datele de intrare citite de la utilizator:
-* `row`, `col`: Coordonatele alese.
-* `isValid`: `true` dacă valorile introduse sunt valide.
-* `isQuitRequested`: `true` dacă jucătorul a cerut ieșirea.
-* **Metode:**
-  * `shouldQuit()`: Returnează dacă s-a solicitat părăsirea jocului.
-  * `canProcessMove()`: Verifică dacă mutarea poate fi procesată.
+### Reguli
+1. Jocul incepe cu jucatorul `X`.
+2. Jucatorii introduc pe rand coordonatele unei celule libere (linie si coloana, de la 0 la 2).
+3. Primul jucator care plaseaza 3 simboluri identice pe orizontala, verticala sau diagonala castiga.
+4. Daca toate cele 9 celule sunt completate fara un castigator, jocul se incheie cu remiza.
 
 ---
 
-## Construcția Proiectului (Build)
+## Structura proiectului
 
-Proiectul poate fi construit manual din linia de comandă în două moduri:
+### 1. Board
 
-### Varianta 1: Utilizând Makefile (Recomandat)
-Pentru compilare și creare executabil:
-> mingw32-make
+Reprezinta tabla de joc si starea celulelor.
 
-Pentru ștergerea fișierelor obiect și executabilului:
-> mingw32-make clean
+- `Board.hpp` - declaratia structurii Board.
+- `Board.cpp` - implementarea constructorilor si operatorilor.
+- Utilizeaza `std::array` pentru reprezentarea tablei de joc.
 
-### Varianta 2: Compilare manuală directă cu g++
-Compilarea unui fișier obiect individual:
-> g++ -std=c++17 -c Engine.cpp -o Engine.o
+### 2. MoveInput
 
-Compilarea întregului proiect într-un singur executabil:
-> g++ -std=c++17 Tictactoe.cpp Engine.cpp Listener.cpp Painter.cpp -o TicTacToe.exe
+Pastreaza datele de intrare citite de la utilizator.
 
-Rularea proiectului:
-> ./TicTacToe.exe
+- `MoveInput.hpp` - declaratia structurii MoveInput.
+- `MoveInput.cpp` - implementarea constructorilor si operatorilor.
+
+### 3. Engine
+
+Gestioneaza logica jocului:
+
+- Initializarea tablei.
+- Procesarea mutarilor.
+- Verificarea castigatorului.
+- Verificarea remizei.
+
+### 4. Listener
+
+Citeste coordonatele introduse de utilizator si gestioneaza solicitarile de reluare a jocului.
+
+### 5. Painter
+
+Afiseaza tabla, mesajele si starea jocului in consola. Utilizeaza clasa abstracta `AbstractPainter`.
+
+### 6. GameStorage
+
+Gestioneaza salvarea rezultatelor jocurilor folosind biblioteca externa SQLite.
+
+Rezultatele sunt salvate in baza de date `tictactoe.db`, in tabelul `games`.
+
+Pentru fiecare partida terminata se salveaza:
+- ID-ul partidei;
+- rezultatul (`Player X wins`, `Player O wins` sau `Draw`);
+- data si ora inregistrarii.
+
+---
+
+## Biblioteci utilizate
+
+### Biblioteci proprii
+
+Proiectul utilizeaza doua biblioteci statice:
+
+- `libBoard.a` - contine implementarea structurii `Board`.
+- `libMoveInput.a` - contine implementarea structurii `MoveInput`.
+
+Aceste biblioteci sunt construite automat de Makefile si sunt legate de aplicatia principala.
+
+### Biblioteca externa
+
+Proiectul utilizeaza SQLite3 pentru pastrarea rezultatelor jocurilor.
+
+### Biblioteca standard C++
+
+Sunt utilizate:
+- `std::array` - pentru reprezentarea tablei de joc;
+- `std::string` - pentru siruri de caractere;
+- `std::unique_ptr` - pentru gestionarea automata a resurselor SQLite;
+- `std::copy`, `std::fill`, `std::find`, `std::sort`;
+- `std::equal`, `std::all_of`, `std::lexicographical_compare`;
+- fluxurile `std::cin`, `std::cout`, `std::istream` si `std::ostream`.
+
+---
+
+## Construirea proiectului (Build)
+
+### Cerinte preliminare
+
+Pentru construirea proiectului pe Windows este utilizat mediul MSYS2 UCRT64.
+
+Sunt necesare:
+- GCC (g++);
+- GNU Make;
+- GNU Archiver (ar);
+- SQLite3.
+
+Instalarea bibliotecilor si instrumentelor necesare prin MSYS2:
+
+```bash
+pacman -S --needed mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-make mingw-w64-ucrt-x86_64-sqlite3
+```
+
+### Construirea aplicatiei
+
+Din terminalul MSYS2 UCRT64, in folderul proiectului, executati:
+
+```bash
+mingw32-make clean
+mingw32-make
+```
+
+Makefile construieste automat:
+1. Biblioteca statica `libBoard.a`.
+2. Biblioteca statica `libMoveInput.a`.
+3. Fisierele obiect ale aplicatiei.
+4. Executabilul `TicTacToe.exe`, legat cu bibliotecile proprii si SQLite3.
+
+### Rularea jocului
+
+```bash
+./TicTacToe.exe
+```
+
+### Curatarea fisierelor generate
+
+```bash
+mingw32-make clean
+```
+
+Comanda elimina fisierele obiect, bibliotecile statice generate si executabilul.
+
+Baza de date `tictactoe.db` este pastrata separat si nu este eliminata de comanda clean.
+
+---
+
+## Organizarea branch-urilor
+
+Fiecare lucrare de laborator este dezvoltata intr-un branch separat al repository-ului GitHub.
+
+Pentru laboratorul 5 se utilizeaza branch-ul `lab05`.
