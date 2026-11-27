@@ -15,3 +15,9 @@ TicTacToe.exe
 # Biblioteci compilate si baze de date
 *.a
 *.db
+
+# Documentatie Doxygen generata
+docs/api/
+
+# Executabile generate
+*.exe
