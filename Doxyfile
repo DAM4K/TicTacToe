@@ -1,0 +1,19 @@
+# Configuratie Doxygen pentru proiectul Tic-Tac-Toe.
+PROJECT_NAME           = "Tic-Tac-Toe"
+PROJECT_BRIEF          = "Documentatia codului sursa pentru jocul Tic-Tac-Toe"
+OUTPUT_DIRECTORY       = docs/api
+INPUT                  = Board.hpp Engine.hpp GameStorage.hpp Listener.hpp MoveInput.hpp Painter.hpp
+FILE_PATTERNS          = *.hpp
+RECURSIVE              = NO
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+HTML_OUTPUT            = html
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = NO
+QUIET                  = YES
+WARN_IF_UNDOCUMENTED   = YES
+WARN_IF_DOC_ERROR      = YES
+WARN_NO_PARAMDOC       = YES

@@ -1,15 +1,17 @@
-
 CXX = g++
 AR = ar
 ARFLAGS = rcs
+DOXYGEN = doxygen
 
-CXXFLAGS = -std=c++17 -Wall
+CXXFLAGS = -std=c++17 -Wall -Wextra -pedantic
 LDLIBS = -lsqlite3
 
 EXEC = TicTacToe.exe
+TEST_EXEC = tests/test_data.exe
 
 APP_SRC = Tictactoe.cpp Engine.cpp Listener.cpp Painter.cpp GameStorage.cpp
 APP_OBJ = $(APP_SRC:.cpp=.o)
+TEST_OBJ = tests/test_data.o
 
 BOARD_LIB = libBoard.a
 MOVEINPUT_LIB = libMoveInput.a
@@ -33,10 +35,23 @@ GameStorage.o: GameStorage.cpp GameStorage.hpp
 Board.o: Board.cpp Board.hpp
 MoveInput.o: MoveInput.cpp MoveInput.hpp
 
+tests/test_data.o: tests/test_data.cpp Board.hpp MoveInput.hpp
+
+$(TEST_EXEC): $(TEST_OBJ) $(BOARD_LIB) $(MOVEINPUT_LIB)
+	$(CXX) $(CXXFLAGS) -o $@ $(TEST_OBJ) -L. -lBoard -lMoveInput
+
+test: $(TEST_EXEC)
+	./$(TEST_EXEC)
+
+docs:
+	mkdir -p docs/api
+	doxygen Doxyfile
+
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -I. -c $< -o $@
 
 clean:
-	rm -f $(APP_OBJ) Board.o MoveInput.o $(BOARD_LIB) $(MOVEINPUT_LIB) $(EXEC) TicTacToe
+	rm -f $(APP_OBJ) Board.o MoveInput.o $(BOARD_LIB) $(MOVEINPUT_LIB) $(EXEC) tests/test_data.o tests/test_data.exe
+	rm -rf docs/api
 
-.PHONY: all clean
+.PHONY: all clean test docs
